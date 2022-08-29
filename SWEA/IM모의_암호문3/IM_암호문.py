@@ -1,3 +1,6 @@
+import sys
+sys.stdin = open('input.txt', 'r')
+
 for tc in range(1, 10+1):
     N = int(input())                        # 원본 암호문의 길이
     pw = list(map(int, input().split()))    # 원본 암호문
