@@ -1,10 +1,19 @@
 
 <div class="card" style="width: 18rem;">
-    <div class="card-body">
-        <h5 class="card-title">{{ post.content }}</h5>
-        <form action="{% url 'posts:delete' post.pk %}" method="POST">
-            {% csrf_token %}
-            <input type="submit" class="btn btn-danger" value="DELETE">
-        </form>
-    </div>
+  {% if post.image %}
+    <img src="{{ post.image.url }}" alt="{{ post.image }}">
+  {% endif %}
+  <div class="card-body">  
+    <h5 class="card-title">{{ post.content }}</h5>
+    
+    <form action="{% url 'posts:update' post.pk %}" method="POST">
+      {% csrf_token %}
+      <input type="submit" class="btn btn-info" value="Edit">
+    </form>
+    
+    <form action="{% url 'posts:delete' post.pk %}" method="POST">
+        {% csrf_token %}
+        <input type="submit" class="btn btn-danger" value="DELETE">
+    </form>
+  </div>
 </div>
