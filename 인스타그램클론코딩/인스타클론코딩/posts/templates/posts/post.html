@@ -1,8 +1,10 @@
 
-    <div class="card" style="width: 18rem;">
-        <div class="card-body">
-            <h5 class="card-title">{{ post.content }}</h5>
-            
-            <a href="#" class="btn btn-danger">Delete</a>
-        </div>
+<div class="card" style="width: 18rem;">
+    <div class="card-body">
+        <h5 class="card-title">{{ post.content }}</h5>
+        <form action="{% url 'posts:delete' post.pk %}" method="POST">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-danger" value="DELETE">
+        </form>
     </div>
+</div>
