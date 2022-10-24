@@ -50,3 +50,11 @@ def signup(request):
         'form': form,
     }
     return render(request, 'accounts/signup.html', context)
+
+
+def delete(request):
+    if request.user.is_authenticated:
+        request.user.delete()
+        auth_logout(request)
+        return render(request, 'accounts/delete.html')
+    return redirect('accounts:login')
