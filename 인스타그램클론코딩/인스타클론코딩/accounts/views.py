@@ -54,7 +54,7 @@ def signup(request):
 
 def delete(request):
     if request.user.is_authenticated:
-        request.user.delete()
-        auth_logout(request)
+        # request.user.delete()
+        # auth_logout(request)
         return render(request, 'accounts/delete.html')
     return redirect('accounts:login')
