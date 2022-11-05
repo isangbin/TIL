@@ -6,7 +6,7 @@ from .forms import CustomUserCreationForm
 
 # Create your views here.
 def login(request):
-    # 이미 인증된 사용자면 index로 간다.
+    # 이미 인증된 사용자라면 index로 간다.
     if request.user.is_authenticated:
         return redirect('posts:index')
     
