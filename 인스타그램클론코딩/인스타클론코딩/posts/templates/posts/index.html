@@ -3,7 +3,9 @@
 {% block content %}
 {% if request.user.is_authenticated %}
   <h1>Hello!</h1>
-  <a href="{% url 'accounts:logout' %}" class='btn btn-danger'>Log out</a>
+  <a href="{% url 'accounts:logout' %}" class='btn btn-secondary'>Log out</a>
+  <a href="{% url 'accounts:update' %}" class='btn btn-warning'>프로필 수정</a>
+  <a href="{% url 'accounts:password' %}" class='btn btn-primary'>비밀번호 변경</a>
   <a href="{% url 'accounts:delete' %}" class='btn btn-danger'>회원 탈퇴</a>
 {% endif %}
   {% for post in posts %}

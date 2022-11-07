@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
-from django.contrib.auth.forms import AuthenticationForm
-from .forms import CustomUserCreationForm
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
+from .forms import CustomUserCreationForm, CustomUserChangeForm
 
 # Create your views here.
 def login(request):
@@ -54,7 +55,44 @@ def signup(request):
 
 def delete(request):
     if request.user.is_authenticated:
-        # request.user.delete()
-        # auth_logout(request)
+        if request.method == 'POST':
+            request.user.delete()
+            auth_logout(request)
+            return redirect('posts:index')
         return render(request, 'accounts/delete.html')
     return redirect('accounts:login')
+
+
+def update(request):
+    if request.method == 'POST':
+        form = CustomUserChangeForm(request.POST, instance=request.user)
+
+        if form.is_valid():
+            form.save()
+            return redirect('posts:index')
+        
+    else:
+        form = CustomUserChangeForm(instance=request.user)
+    
+    context = {
+        'form': form,
+    }
+    return render(request, 'accounts/update.html', context)
+
+
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)
+            return redirect('posts:index')
+        
+    else:
+        form = PasswordChangeForm(request.user)
+    
+    context = {
+        'form': form,
+    }
+    return render(request, 'accounts/password.html', context)
