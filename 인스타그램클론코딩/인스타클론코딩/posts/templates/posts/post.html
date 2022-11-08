@@ -1,4 +1,4 @@
-
+{% load bootstrap5 %}
 <div class="card" style="width: 18rem;">
   {% if post.image %}
     <img src="{{ post.image.url }}" alt="{{ post.image }}">
@@ -15,5 +15,27 @@
         {% csrf_token %}
         <input type="submit" class="btn btn-danger" value="DELETE">
     </form>
+
+    {% for comment in post.comment_set.all %}
+      <div>
+        <span>{{ comment.user }}: {{ comment.content }}</span>
+        {% if request.user == comment.user %}
+          <form action="{% url 'posts:comment_delete' post.pk comment.pk %}" method="POST">
+            {% csrf_token %}
+            <input type="submit" value="댓삭" class="danger">
+          </form>
+        {% endif %}
+      </div>
+    {% empty %}
+      <p>댓글이 없습니다.</p>
+    {% endfor %}
+    
+    {% if request.user.is_authenticated %}
+      <form action="{% url 'posts:comment_create' post.pk %}" method="POST">
+        {% csrf_token %}
+        {% bootstrap_form comment_form %}
+        <input type="submit" value="작성" class="btn btn-primary">
+      </form>
+    {% endif %}
   </div>
 </div>

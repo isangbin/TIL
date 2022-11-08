@@ -96,3 +96,7 @@ def change_password(request):
         'form': form,
     }
     return render(request, 'accounts/password.html', context)
+
+
+def profile(request):
+    pass
