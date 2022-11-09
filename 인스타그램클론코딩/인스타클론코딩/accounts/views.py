@@ -1,8 +1,10 @@
-from django.shortcuts import render, redirect
+from django.views.decorators.http import require_POST
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
+from django.contrib.auth import get_user_model
 from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 
 # Create your views here.
@@ -98,5 +100,23 @@ def change_password(request):
     return render(request, 'accounts/password.html', context)
 
 
-def profile(request):
-    pass
+def profile(request, username):
+    person = get_object_or_404(get_user_model(), username=username)
+    context = {
+        'person': person
+    }
+    return render(request, 'accounts/profile.html', context)
+
+
+@require_POST
+def follow(request, user_pk):
+    if request.user.is_authenticated:
+        person = get_object_or_404(get_user_model(), pk=user_pk)
+        user = request.user
+        if person != user:
+            if person.followers.filter(pk=user.pk).exists():
+                person.followers.remove(user)
+            else:
+                person.followers.add(user)
+        
+    return redirect('accounts:profile', person.username)

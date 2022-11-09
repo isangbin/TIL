@@ -16,6 +16,22 @@
         <input type="submit" class="btn btn-danger" value="DELETE">
     </form>
 
+
+
+    <form action="{% url 'posts:like' post.pk %}" method="POST">
+      {% csrf_token %}
+      {% if user in post.like_users.all %}
+        <button>
+          <i class="fas fa-heart" style="color: crimson;"></i>
+        </button>
+      {% else %}
+        {% comment %} <button>좋아요</button> {% endcomment %}
+        <button>
+          <i class="far fa-heart" style="color: crimson;"></i>
+        </button>
+      {% endif %}
+    </form>
+
     {% for comment in post.comment_set.all %}
       <div>
         <span>{{ comment.user }}: {{ comment.content }}</span>

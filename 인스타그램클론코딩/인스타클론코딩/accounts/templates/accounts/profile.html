@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  {% if user != person %}
+    <div>
+      {% if {{ person.username }}  %}
+        <h1>{{ person.username }}의 프로필</h1>
+      {% endif %}
+      {% if {{ person.nickname }}  %}
+        <h1>닉네임 : {{ person.nickname }}</h1>
+      {% endif %}
+      {% if {{ person.introduction }}  %}
+        <h1>자기소개 : {{ person.introduction }}</h1>
+      {% endif %}
+    </div>
+    <div>
+      <form action="{% url 'accounts:follow' person.pk %}" method="POST">
+        {% csrf_token %}
+        {% if user in followers %}
+          <button>언팔로우</button>
+        {% else %}
+          <button>팔로우</button>
+        {% endif %}
+      </form>
+    </div>
+  {% else %}
+    <div>
+      <h1>환영합니다 ! {{ person.username }}</h1>
+    </div>
+  {% endif %}
+{% endblock content %}

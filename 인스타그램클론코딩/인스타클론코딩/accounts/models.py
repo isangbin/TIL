@@ -6,7 +6,7 @@ from imagekit.processors import Thumbnail
 
 # Create your models here.
 class User(AbstractUser):
-    pass
+    followings = models.ManyToManyField('self', symmetrical=False, related_name='followers')
 
 
 def profile_image_path(instance, filename):

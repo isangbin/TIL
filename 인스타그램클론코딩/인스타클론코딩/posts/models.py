@@ -9,6 +9,7 @@ def posts_image_path(instance, filename):
 class Post(models.Model):
     content = models.TextField()
     image = models.ImageField(blank=True, upload_to=posts_image_path)
+    like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_posts')
 
 
 class Comment(models.Model):
